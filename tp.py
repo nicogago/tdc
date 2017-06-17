@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
+from __future__ import division
 POSITIVE_INFINITY = float("inf")
 
 class Grafo:
@@ -32,8 +32,12 @@ class Grafo:
             for nombreVecino2 in nombreVecinos2:
                 if nombreVecino2 in nombreVecinos:
                     coef += 1
+        n = len(nombreVecinos)
+        maxRelaciones = n*(n-1)/2
         print(coef)
-        return (coef/2)/3         
+        print(maxRelaciones)
+        print(coef/maxRelaciones)
+        return (coef/maxRelaciones)         
         
 class Arista:
     def __init__(self, src, dst, weight=1):
