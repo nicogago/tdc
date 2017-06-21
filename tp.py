@@ -48,6 +48,10 @@ class Grafo:
                 
         if ( maxRelaciones >0 ): return (coef/maxRelaciones)
         return 0         
+    
+    def caminoMinimo(self, nombrevertice1, nombreVertice2):
+        nombreVecinos1 = self.vertices[nombrevertice1].getVecinos()
+        nombreVecinos2 = self.vertices[nombreVertice2].getVecinos()
         
 class Arista:
     def __init__(self, src, dst, weight=1):
