@@ -23,6 +23,16 @@ class Grafo:
             vertice = Vertice(nombre)
             self.vertices[nombre] = vertice
     
+    def cClustering(self):
+        i = 0
+        resultado = 0
+        print("pensando...")
+        for vertice in self.vertices.values():
+            resultado += self.coefClustering(vertice.id)
+            i += 1
+        if (i > 0 ): return resultado/i
+        return i
+    
     def coefClustering(self,nombreVertice):
         nombreVecinos = self.vertices[nombreVertice].getVecinos()
         coef = 0
@@ -34,10 +44,10 @@ class Grafo:
                     coef += 1
         n = len(nombreVecinos)
         maxRelaciones = n*(n-1)/2
-        print(coef)
-        print(maxRelaciones)
-        print(coef/maxRelaciones)
-        return (coef/maxRelaciones)         
+        coef = coef/2 #debido a la forma de contar
+                
+        if ( maxRelaciones >0 ): return (coef/maxRelaciones)
+        return 0         
         
 class Arista:
     def __init__(self, src, dst, weight=1):
@@ -73,6 +83,7 @@ class Vertice:
 #--------------------------------MAIN--------------------------------#
 grafo = Grafo()
 archivo = open("socfb-Caltech36.mtx")
+#archivo = open("grafoprueba.txt")
 texto = archivo.read().split()
 i = 0
 j = 1
@@ -82,9 +93,8 @@ while (i < len(texto) and j < len(texto)):
     grafo.addVecinos(vertice1, vertice2)
     i+= 2
     j+= 2
-print(list(grafo.vertices.keys()))
-print(len(grafo.vertices))
-print(len(grafo.aristas))
-print(grafo.coefClustering("2"))
+print("cantidad de vertices = " + str(len(grafo.vertices)))
+print("cantidad de aristas = " + str(len(grafo.aristas)))
+print("Coef. De Clustering Promedio = " + str(grafo.cClustering()))
 
 archivo.close()
