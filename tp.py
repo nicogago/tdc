@@ -1,14 +1,19 @@
-	#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from __future__ import division
 POSITIVE_INFINITY = float("inf")
-
+import matplotlib
+import matplotlib.pyplot as plt
+import time
 class Grafo:
     def __init__(self): 
 
         self.aristas = []   #lista
         self.vertices = {}  #diccionario
         self.matAdy = []
+
+    def getVertices(self):
+    	return self.vertices
 
     def crearMatAdy(self):
         maximo = 0
@@ -192,6 +197,10 @@ print("cantidad de aristas = " + str(len(grafo.aristas)))
 #print("Camino Minimo Promedio = " +str(grafo.caminoMinimoPromedio()))
 #print(len(grafo.crearMatAdy()))
 #grafo.printMat()
-print(grafo.funcionDeGrado())
 
+y = grafo.funcionDeGrado()
+n = len(grafo.getVertices().keys())	
+x = range(n)
+plt.plot(x, y)
+plt.show()
 archivo.close()
