@@ -11,7 +11,7 @@ class Grafo:
         self.matAdy = []
 
     def crearMatAdy(self):
-    	maximo = 0
+        maximo = 0
     	for arista in self.aristas:
     		src = int(arista.getSurce())
     		dst = int(arista.getDestiny())
@@ -21,7 +21,6 @@ class Grafo:
     			maximo_aux = dst
     		if maximo < maximo_aux:
     			maximo = maximo_aux
-    	print maximo
     	mat = []
     	for i in range(maximo+1):
     		fila = []
@@ -80,9 +79,49 @@ class Grafo:
         if ( maxRelaciones >0 ): return (coef/maxRelaciones)
         return 0         
     
-    def caminoMinimo(self, nombrevertice1, nombreVertice2):
-        nombreVecinos1 = self.vertices[nombrevertice1].getVecinos()
-        nombreVecinos2 = self.vertices[nombreVertice2].getVecinos()
+    def caminoMinimo(self, origen, destino):
+        distancia = 0       
+        if (origen == destino): return distancia
+        
+        distancia += 1
+        nuevaLista = []
+        visitados = []
+        visitados.append(origen)
+        vecinos = self.vertices[origen].getVecinos()
+        if (destino in vecinos): return distancia
+    
+        while (distancia < len(self.vertices)) and (len(vecinos) > 0):
+            for vecino in vecinos:
+                if vecino not in visitados:
+                    if (destino in self.vertices[vecino].vecinos): return distancia
+                    visitados.append(vecino)
+                    for vecinoDeVecino in self.vertices[vecino].vecinos:
+                        if vecino not in visitados:
+                            nuevaLista.append(vecinoDeVecino)
+
+            vecinos = nuevaLista
+            distancia += 1
+        return POSITIVE_INFINITY
+    
+    def caminoMinimoPromedio(self):
+        i = 0
+        resultado = 0
+        visitados = []
+        print("pensando mucho...")
+        
+        for v1 in self.vertices.values():
+            for v2 in self.vertices.values():
+                nombrev1 = v1.id
+                nombrev2 = v2.id
+                if str(nombrev1)+","+str(nombrev2) not in visitados and str(nombrev2)+","+str(nombrev1) not in visitados:
+                    print("busco " +str(nombrev1)+","+str(nombrev2) )
+                    resultado += self.caminoMinimo(nombrev1,nombrev2)
+                    visitados.append(str(nombrev1)+","+str(nombrev2))
+                    i += 1
+        if (i > 0 ): return resultado/i
+        return i
+            
+        
         
 class Arista:
     def __init__(self, src, dst, weight=1):
@@ -135,14 +174,12 @@ while (i < len(texto) and j < len(texto)):
     i+= 2
     j+= 2
 
-print(list(grafo.vertices.keys()))
-print(len(grafo.vertices))
-print(len(grafo.aristas))
-print(grafo.coefClustering("2"))
-print(len(grafo.crearMatAdy()))
-grafo.printMat()
-#print("cantidad de vertices = " + str(len(grafo.vertices)))
-#print("cantidad de aristas = " + str(len(grafo.aristas)))
+print("cantidad de vertices = " + str(len(grafo.vertices)))
+print("cantidad de aristas = " + str(len(grafo.aristas)))
 #print("Coef. De Clustering Promedio = " + str(grafo.cClustering()))
+print("Camino Minimo Promedio = " +str(grafo.caminoMinimoPromedio()))
+#print(len(grafo.crearMatAdy()))
+#grafo.printMat()
+
 
 archivo.close()
