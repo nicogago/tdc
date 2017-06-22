@@ -35,6 +35,18 @@ class Grafo:
     	self.matAdy = mat
     	return mat
 
+    def funcionDeGrado (self):
+    	n = len(self.vertices.keys())	
+    	fdg = []
+    	for i in range(n):
+    		fdg.append(0)
+    	for vert in self.vertices.keys():
+    		vertice = self.vertices[vert]
+    		cant = len(vertice.getVecinos())
+    		fdg[cant] = fdg[cant] + 1
+    	return fdg
+
+
     def printMat(self):
     	for fila in self.matAdy:
     		print fila
@@ -177,9 +189,9 @@ while (i < len(texto) and j < len(texto)):
 print("cantidad de vertices = " + str(len(grafo.vertices)))
 print("cantidad de aristas = " + str(len(grafo.aristas)))
 #print("Coef. De Clustering Promedio = " + str(grafo.cClustering()))
-print("Camino Minimo Promedio = " +str(grafo.caminoMinimoPromedio()))
+#print("Camino Minimo Promedio = " +str(grafo.caminoMinimoPromedio()))
 #print(len(grafo.crearMatAdy()))
 #grafo.printMat()
-
+print(grafo.funcionDeGrado())
 
 archivo.close()
