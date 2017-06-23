@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import division
 POSITIVE_INFINITY = float("inf")
-import matplotlib
-import matplotlib.pyplot as plt
+#import matplotlib
+#import matplotlib.pyplot as plt
 import time
 class Grafo:
     def __init__(self): 
@@ -105,19 +105,21 @@ class Grafo:
         visitados = []
         visitados.append(origen)
         vecinos = self.vertices[origen].getVecinos()
-        if (destino in vecinos): return distancia
+
     
         while (distancia < len(self.vertices)) and (len(vecinos) > 0):
+            if (destino in vecinos): return distancia
             for vecino in vecinos:
                 if vecino not in visitados:
-                    if (destino in self.vertices[vecino].vecinos): return distancia
                     visitados.append(vecino)
                     for vecinoDeVecino in self.vertices[vecino].vecinos:
-                        if vecino not in visitados:
+                        if vecinoDeVecino not in visitados:
                             nuevaLista.append(vecinoDeVecino)
 
-            vecinos = nuevaLista
             distancia += 1
+            vecinos = nuevaLista
+            nuevaLista = []
+
         return POSITIVE_INFINITY
     
     def caminoMinimoPromedio(self):
@@ -193,14 +195,14 @@ while (i < len(texto) and j < len(texto)):
 
 print("cantidad de vertices = " + str(len(grafo.vertices)))
 print("cantidad de aristas = " + str(len(grafo.aristas)))
-#print("Coef. De Clustering Promedio = " + str(grafo.cClustering()))
-#print("Camino Minimo Promedio = " +str(grafo.caminoMinimoPromedio()))
-#print(len(grafo.crearMatAdy()))
+print("Coef. De Clustering Promedio = " + str(grafo.cClustering()))
+print("Camino Minimo Promedio = " +str(grafo.caminoMinimoPromedio()))
+print(len(grafo.crearMatAdy()))
 #grafo.printMat()
 
 y = grafo.funcionDeGrado()
 n = len(grafo.getVertices().keys())	
-x = range(n)
-plt.plot(x, y)
-plt.show()
+#x = range(n)
+#plt.plot(x, y)
+#plt.show()
 archivo.close()
