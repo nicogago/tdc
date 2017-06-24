@@ -42,14 +42,17 @@ class Grafo:
 
     def funcionDeGrado (self):
     	n = len(self.vertices.keys())	
-    	fdg = []
-    	for i in range(n):
-    		fdg.append(0)
-    	for vert in self.vertices.keys():
-    		vertice = self.vertices[vert]
-    		cant = len(vertice.getVecinos())
-    		fdg[cant] = fdg[cant] + 1
-    	return fdg
+    	#fdg = []
+    	#for i in range(n):
+    	#	fdg.append(0)
+        resultado = 0
+        n = 0
+        for vert in self.vertices.keys():
+            vertice = self.vertices[vert]
+            cant = len(vertice.getVecinos())
+            resultado += cant
+            n += 1
+    	return resultado/n
 
 
     def printMat(self):
@@ -133,7 +136,7 @@ class Grafo:
                 nombrev1 = v1.id
                 nombrev2 = v2.id
                 if str(nombrev1)+","+str(nombrev2) not in visitados and str(nombrev2)+","+str(nombrev1) not in visitados:
-                    print("busco " +str(nombrev1)+","+str(nombrev2) )
+                    print("busco " +str(nombrev1)+","+str(nombrev2) + "voy por el: " + str(i) )
                     resultado += self.caminoMinimo(nombrev1,nombrev2)
                     visitados.append(str(nombrev1)+","+str(nombrev2))
                     i += 1
@@ -196,11 +199,12 @@ while (i < len(texto) and j < len(texto)):
 print("cantidad de vertices = " + str(len(grafo.vertices)))
 print("cantidad de aristas = " + str(len(grafo.aristas)))
 print("Coef. De Clustering Promedio = " + str(grafo.cClustering()))
-print("Camino Minimo Promedio = " +str(grafo.caminoMinimoPromedio()))
-print(len(grafo.crearMatAdy()))
+#print("Camino Minimo Promedio = " +str(grafo.caminoMinimoPromedio()))
+#print(len(grafo.crearMatAdy()))
 #grafo.printMat()
 
 y = grafo.funcionDeGrado()
+print("Distribución de grado promedio = " + str(y))
 n = len(grafo.getVertices().keys())	
 #x = range(n)
 #plt.plot(x, y)
