@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import division
 POSITIVE_INFINITY = float("inf")
-#import matplotlib
-#import matplotlib.pyplot as plt
+import matplotlib
+import matplotlib.pyplot as plt
 import time
 class Grafo:
     def __init__(self): 
@@ -11,6 +11,7 @@ class Grafo:
         self.aristas = []   #lista
         self.vertices = {}  #diccionario
         self.matAdy = []
+        self.fdg = []
 
     def getVertices(self):
     	return self.vertices
@@ -42,18 +43,20 @@ class Grafo:
 
     def funcionDeGrado (self):
     	n = len(self.vertices.keys())	
-    	#fdg = []
-    	#for i in range(n):
-    	#	fdg.append(0)
+    	for i in range(n):
+    		self.fdg.append(0)
         resultado = 0
         n = 0
         for vert in self.vertices.keys():
             vertice = self.vertices[vert]
             cant = len(vertice.getVecinos())
+            self.fdg[cant] = self.fdg[cant] + 1
             resultado += cant
             n += 1
     	return resultado/n
 
+    def darFDG(self):
+    	return self.fdg
 
     def printMat(self):
     	for fila in self.matAdy:
@@ -129,21 +132,40 @@ class Grafo:
         i = 0
         resultado = 0
         visitados = []
+        n = len(self.vertices.values())
+        mat = []
+        for i in range(n):
+            fila = []
+            for j in range(n):
+                fila.append(0)
+            mat.append(fila)
         print("pensando mucho...")
-        
+        i = 0
         for v1 in self.vertices.values():
+            j = 0
             for v2 in self.vertices.values():
                 nombrev1 = v1.id
                 nombrev2 = v2.id
-                if str(nombrev1)+","+str(nombrev2) not in visitados and str(nombrev2)+","+str(nombrev1) not in visitados:
-                    print("busco " +str(nombrev1)+","+str(nombrev2) + "voy por el: " + str(i) )
-                    resultado += self.caminoMinimo(nombrev1,nombrev2)
+                if str(nombrev1)+","+str(nombrev2) not in visitados and str(nombrev2)+","+str(nombrev1) not in visitados and nombrev1 != nombrev2:
+                    #print("busco " +str(nombrev1)+","+str(nombrev2) + "voy por el: " + str(i) )
+                    res = self.caminoMinimo(nombrev1,nombrev2)
+                    print mat
+                    print j
+                    print i
+                    mat[i][j]= res
+                    mat[j][i]= res
                     visitados.append(str(nombrev1)+","+str(nombrev2))
-                    i += 1
-        if (i > 0 ): return resultado/i
-        return i
-            
-        
+                j+=1
+            i+=1    
+        resultado = 0
+        for i in range(n):
+            for j in range(n):
+                resultado += mat[i][j]
+        if (resultado == 0): 
+            return resultado
+        else: 
+            denom = n * (n-1)
+            return resultado/denom
         
 class Arista:
     def __init__(self, src, dst, weight=1):
@@ -184,8 +206,8 @@ class Vertice:
 
 #--------------------------------MAIN--------------------------------#
 grafo = Grafo()
-archivo = open("socfb-Caltech36.mtx")
-#archivo = open("grafoprueba.txt")
+#archivo = open("socfb-Caltech36.mtx")
+archivo = open("grafoprueba.txt")
 texto = archivo.read().split()
 i = 0
 j = 1
@@ -199,14 +221,17 @@ while (i < len(texto) and j < len(texto)):
 print("cantidad de vertices = " + str(len(grafo.vertices)))
 print("cantidad de aristas = " + str(len(grafo.aristas)))
 print("Coef. De Clustering Promedio = " + str(grafo.cClustering()))
-#print("Camino Minimo Promedio = " +str(grafo.caminoMinimoPromedio()))
+print("Camino Minimo Promedio = " +str(grafo.caminoMinimoPromedio()))
 #print(len(grafo.crearMatAdy()))
 #grafo.printMat()
 
-y = grafo.funcionDeGrado()
-print("Distribución de grado promedio = " + str(y))
-n = len(grafo.getVertices().keys())	
-#x = range(n)
-#plt.plot(x, y)
-#plt.show()
+#print("Distribución de grado promedio = " + str(grafo.funcionDeGrado()))
+#y = grafo.darFDG()
+# n = len(grafo.getVertices().keys())	
+# x = range(n)
+
+# print len(y)
+# print len(x)
+# plt.plot(x, y)
+# plt.show()
 archivo.close()
