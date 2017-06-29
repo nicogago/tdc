@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import division
 POSITIVE_INFINITY = float("inf")
-import matplotlib
-import matplotlib.pyplot as plt
+#import matplotlib
+#import matplotlib.pyplot as plt
 import time
 class Grafo:
     def __init__(self): 
@@ -126,46 +126,30 @@ class Grafo:
             vecinos = nuevaLista
             nuevaLista = []
 
-        return POSITIVE_INFINITY
+        return 0 # si no encontre camino devuelvo 0
     
     def caminoMinimoPromedio(self):
-        i = 0
         resultado = 0
+        res = 0
         visitados = []
         n = len(self.vertices.values())
-        mat = []
-        for i in range(n):
-            fila = []
-            for j in range(n):
-                fila.append(0)
-            mat.append(fila)
+
         print("pensando mucho...")
-        i = 0
         for v1 in self.vertices.values():
-            j = 0
             for v2 in self.vertices.values():
                 nombrev1 = v1.id
                 nombrev2 = v2.id
-                if str(nombrev1)+","+str(nombrev2) not in visitados and str(nombrev2)+","+str(nombrev1) not in visitados and nombrev1 != nombrev2:
-                    #print("busco " +str(nombrev1)+","+str(nombrev2) + "voy por el: " + str(i) )
+                if str(nombrev1)+","+str(nombrev2) not in visitados and str(nombrev2)+","+str(nombrev1) not in visitados:                    
                     res = self.caminoMinimo(nombrev1,nombrev2)
-                    print mat
-                    print j
-                    print i
-                    mat[i][j]= res
-                    mat[j][i]= res
+                    print("busco " +str(nombrev1)+","+str(nombrev2) + "resultado = " + str(res) )
                     visitados.append(str(nombrev1)+","+str(nombrev2))
-                j+=1
-            i+=1    
-        resultado = 0
-        for i in range(n):
-            for j in range(n):
-                resultado += mat[i][j]
-        if (resultado == 0): 
-            return resultado
-        else: 
-            denom = n * (n-1)
-            return resultado/denom
+                    resultado += res*2  #se multiplica por 2 para no buscar el camino inverso
+        
+        if (resultado == 0): return 0
+        denom = n * (n-1)
+        print(resultado)
+        print(denom)
+        return resultado/denom
         
 class Arista:
     def __init__(self, src, dst, weight=1):
